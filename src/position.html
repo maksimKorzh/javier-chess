@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <link rel="stylesheet" href="./css/form.css" />
+
+    <link
+      rel="stylesheet"
+      href="./css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/chessboard-1.0.0.min.css" />
+    <title>ꉓꃅꍟꌗꌗ ꁅꍏꎭꍟ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="row">
+      <div class="py-5 mx-auto col-sm-6">
+        <div class="text-center">
+          <h3 class="white-header">Kindly Fill in your Name</h3>
+          <p class="blue-text">
+            Please fill in the right name<br />
+            this will be used in monitoring your performance.
+          </p>
+          <div class="card">
+            <form class="form-card" onsubmit="event.preventDefault()">
+              <div class="text-left">
+                <div class="form-group flex-column d-flex w-100">
+                  <label class="form-control-label px-3"
+                    >First name<span class="text-danger"> *</span></label
+                  >
+                  <input
+                    type="text"
+                    id="fname"
+                    name="fname"
+                    placeholder="Enter your first name"
+                    onblur="validate(1)"
+                  />
+                </div>
+                <div class="form-group flex-column d-flex">
+                  <label class="form-control-label px-3"
+                    >Last name<span class="text-danger"> *</span></label
+                  >
+                  <input
+                    type="text"
+                    id="lname"
+                    name="lname"
+                    placeholder="Enter your last name"
+                    onblur="validate(2)"
+                  />
+                </div>
+                
+              </div>
+              <div class="row justify-content-end">
+                <div class="form-group col-sm-6">
+                  <button type="submit" id="btn-block" class="btn-block btn-primary">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="game-container col-sm-6">
+        <h1>ꉓꃅꍟꌗꌗ ꁅꍏꎭꍟ</h1>
+        <div class="board" id="board"></div>
+     
+      </div>
+    </div>
+  </body>
+  <script src="./js/validate.js"></script>
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/chessboard-1.0.0.min.js"></script>
+  <script src="./js/chess.min.js"></script>
+  <script src="script.js"></script>
+</html>

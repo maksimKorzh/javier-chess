@@ -1,0 +1,88 @@
+<?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+require 'vendor/autoload.php';
+
+$mail = new PHPMailer(true);
+
+$request = Request::createFromGlobals();
+$mail->isSMTP();
+$mail->Host       = 'smtp.ajedrecista.com';
+$mail->SMTPAuth   = true;
+$mail->Username   = 'boss.ajeredista.com'; // Replace with your Gmail email
+$mail->Password   = 'B}(8RdYLtZOw'; // Replace with your Gmail password
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+$mail->Port       = 465;
+
+$mail->setFrom('chessnia@gmail.com', 'Taiwo Kehinde');
+
+// Check if the request method is POST
+
+function renderEmailTemplate($data)
+{
+    $template = file_get_contents('./email_template.html');
+
+    foreach ($data as $key => $value) {
+        $template = str_replace("{{" . $key . "}}", $value, $template);
+    }
+
+    return $template;
+}
+
+if ($request->isMethod('POST')) {
+
+    // Check if the Content-Type header is application/json
+
+    try {
+        // Server settings for Gmail
+
+        // Recipients
+
+        $mail->addAddress('chessnia@gmail.com', 'Taiwo Truth');
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Subject';
+
+
+        if ($request->headers->get('Content-Type') === 'application/json') {
+
+            // Get the JSON data from the request
+            $jsonData = json_decode($request->getContent());
+
+            // $mail->send();
+            // Check if JSON decoding was successful
+            if (json_last_error() === JSON_ERROR_NONE) {
+                // JSON data is valid, you can now work with $jsonData
+                // For example, you can access properties like $jsonData->property_name
+                // json_encode()
+                // Respond with a success message
+                $mail->Body    = renderEmailTemplate($jsonData);
+
+                $mail->send();
+
+                $response = new Response("Congratulations your info was submitted");
+                $response->send();
+            } else {
+                // JSON decoding failed, respond with an error message
+                $response = new Response(json_encode(['error' => 'Invalid JSON']), 400, ['Content-Type' => 'application/json']);
+                $response->send();
+            }
+        } else {
+            // Invalid Content-Type header
+            $response = new Response(json_encode(['error' => 'Unsupported Media Type']), 415, ['Content-Type' => 'application/json']);
+            $response->send();
+        }
+    } catch (Exception $e) {
+        $response = new Response("Message could not be sent. Mailer Error: {$mail->ErrorInfo}, Data is is {$request->getContent()}", 500);
+        $response->send();
+    }
+} else {
+    // Invalid request method
+    $response = new Response(json_encode(['error' => 'Method Not Allowed']), 405, ['Content-Type' => 'application/json']);
+    $response->send();
+}

@@ -1,0 +1,6 @@
+{
+  "require": {
+    "phpmailer/phpmailer": "^6.5",
+    "symfony/http-foundation": "^6.0"
+  }
+}
